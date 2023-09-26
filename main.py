@@ -55,11 +55,24 @@ def match_result_name(winner_name, loser_name):
     match_result(winner, loser)
 
 ##  match result function. takes two players objects player a is the winner and b is the loser
-##  ratings must be calculated and updated  
+# ratings must be calculated and updated  
 def match_result(player_a: pl.Player, player_b: pl.Player):
     player_a_update, player_b_update = new_rating(player_a.rating, player_b.rating)
     player_a.update_rating(player_a_update)
     player_b.update_rating(player_b_update)
+
+##  update both players elo after completing a doubles match 
+##  takes 4 player obj, averages their elo then does the usual calculation
+def doubles_match_results(player_a:pl.Player, player_b: pl.Player, player_c:pl.Player, player_d: pl.Player):
+    winner_avg_elo = (player_a.rating + player_b.rating)/2
+    loser_avg_elo = (player_c.rating + player_d.rating)/2
+    winner_update, loser_update = new_rating(winner_avg_elo, loser_avg_elo)
+    winner_diff = winner_update - winner_avg_elo
+    loser_diff = loser_update - loser_avg_elo
+    
+    print(f"After their doubles game {player_a.name} and {player_b.name} gained {winner_diff} elo points")
+    player_a.update_rating(player_a.rating + winner_diff),player_b.update_rating(player_b.rating + winner_diff)
+    player_c.update_rating(player_c.rating + loser_diff),player_d.update_rating(player_d.rating + loser_diff)
 
 
 players = []
@@ -73,6 +86,8 @@ calc_prev_match_data()
 for player in players:
     print(f"{player.name}:{player.rating}\n")
 
+# test doubles match
+doubles_match_results(players[3], players[4], players[0], players[1])
 
 ##  print rankings
 
