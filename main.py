@@ -1,10 +1,9 @@
 import pandas as pd
 import Player as pl
 
-file_path = 'C:/Users/Jack Ryan/Documents/VSProjects/Darts/Coolmoyne Leaderboards.xlsx'
-rankings = pd.read_excel(file_path, sheet_name="Starting Rank")
+rankings = pd.read_csv('C:/Users/Jack Ryan/Documents/VSProjects/Darts/Coolmoyne Leaderboard Starting Ranks.csv')
 #calculates and returns percentage chance that player a beats player b. 
-matches = pd.read_excel(file_path, sheet_name="Matches")
+matches = pd.read_csv('C:/Users/Jack Ryan/Documents/VSProjects/Darts/Coolmoyne Leaderboard Matches.csv')
 
 ##  populate a list of player objects 
 def fill_players(list:list):
@@ -74,7 +73,10 @@ def doubles_match_results(player_a:pl.Player, player_b: pl.Player, player_c:pl.P
     player_a.update_rating(player_a.rating + winner_diff),player_b.update_rating(player_b.rating + winner_diff)
     player_c.update_rating(player_c.rating + loser_diff),player_d.update_rating(player_d.rating + loser_diff)
 
-
+def update_csv():
+    player_data = [{'Name': player.name, 'Rating': player.rating} for player in players]
+    player_df = pd.DataFrame(player_data)
+    player_df.to_csv('C:/Users/Jack Ryan/Documents/VSProjects/Darts/Coolmoyne Leaderboard Updated Rank.csv')
 players = []
 ##  fill players from excel sheet
 fill_players(players)
@@ -83,13 +85,15 @@ fill_players(players)
 calc_prev_match_data()
 
 ##  print rankings
+print("After calculating the historical matches the current standings are")
 for player in players:
-    print(f"{player.name}:{player.rating}\n")
+    print(f"{player.name}:{player.rating}")
 
 # test doubles match
 doubles_match_results(players[3], players[4], players[0], players[1])
 
-##  print rankings
-
+##  print rankings after doubles match
 for player in players:
-    print(f"{player.name}:{player.rating}\n")
+    print(f"{player.name}:{player.rating}")
+
+update_csv()
