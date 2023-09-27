@@ -14,7 +14,13 @@ def fill_players(list:list):
 def print_rankings():
     for player in players:
         print(f"{player.name}:{player.rating}")
-
+def print_current_avg_elo():
+    total_elo=0
+    i=0
+    for player in players:
+        total_elo =+ total_elo + player.rating
+        i = i+1
+    print(f"Total elo in the system is {total_elo}\nAverage elo in the system is {total_elo/i}" )
 ##  calculate the percentage chance player_a should win a match against an oppenent player_b
 ##  return percentage chance
 def predicted_win_percentage(player_a_rating, player_b_rating):
@@ -111,7 +117,7 @@ players = []
 fill_players(players)
 
 ##  calculate elo based on matches stored
-calc_prev_match_data()
+# calc_prev_match_data()
 print("After calculating the historical matches the current standings are")
 print_rankings()
 
@@ -122,5 +128,6 @@ doubles_match_results(players[3], players[0], players[2], players[1], players[1]
 
 ##  print rankings after doubles match
 print_rankings()
+print_current_avg_elo()
 
 update_rank_csv()
