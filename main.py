@@ -24,9 +24,9 @@ def predicted_win_percentage(player_a_rating, player_b_rating):
 ##  calculate the rating change for eacg player after winning a match 
 ##  return each players new elo
 def new_rating(winner, loser):
-    winner_new_rating = winner+32*(1-predicted_win_percentage(winner, loser))
-    loser_new_rating =  loser+32*(0-predicted_win_percentage(loser, winner))
-    return winner_new_rating, loser_new_rating
+    winner_change = (winner+32*(1-predicted_win_percentage(winner, loser))-winner)
+    loser_change =  (loser+32*(0-predicted_win_percentage(loser, winner))-loser)
+    return winner_change, loser_change
 
 ##  calculate the new elo based on the previous matches in the system
 def calc_prev_match_data():
@@ -75,13 +75,13 @@ def match_result_name(winner_name, loser_name, threw_first_name):
 
 def match_result(player_a: pl.Player, player_b: pl.Player, winner_threw_first:bool):
     if winner_threw_first:
-        player_a_update, player_b_update = new_rating(player_a.rating+20, player_b.rating)      # add 20 elo points for first throw advatage
-        player_a.update_rating(player_a_update-20)                                              # remove 20 elo points to account for advatage given
-        player_b.update_rating(player_b_update)
+        player_a_change, player_b_change = new_rating(player_a.rating+20, player_b.rating)      # add 20 elo points for first throw advatage
+        player_a.update_rating(player_a.rating+player_a_change)                                              # remove 20 elo points to account for advatage given
+        player_b.update_rating(player_b.rating+player_b_change)
     else:
-        player_a_update, player_b_update = new_rating(player_a.rating, player_b.rating+20)      # add 20 elo points for first throw advatage
-        player_a.update_rating(player_a_update)
-        player_b.update_rating(player_b_update-20)                                              # remove 20 elo points to account for advatage given
+        player_a_change, player_b_change = new_rating(player_a.rating, player_b.rating+20)      # add 20 elo points for first throw advatage
+        player_a.update_rating(player_a.rating+player_a_change)                                              # remove 20 elo points to account for advatage given
+        player_b.update_rating(player_b.rating+player_b_change)                                             # remove 20 elo points to account for advatage given
 
 ##  update both players elo after completing a doubles match 
 ##  takes 4 player obj, averages their elo then does the usual calculation
@@ -90,21 +90,17 @@ def doubles_match_results(player_a:pl.Player, player_b: pl.Player, player_c:pl.P
     loser_avg_elo = (player_c.rating + player_d.rating)/2
     
     if  threw_first_name==player_a.name or threw_first_name==player_b.name:         ##check if winning team threw first
-        print(f"Team {player_a.name} and {player_b.name} won their doubles game. {threw_first_name} threw first")
-        winner_update, loser_update = new_rating(winner_avg_elo+20, loser_avg_elo)      ##add 20 elo to team who threw first
-        winner_diff = (winner_update-20) - winner_avg_elo                               ##remove 20 added
-        loser_diff = loser_update - loser_avg_elo
+        print(f"Team {player_a.name} and {player_b.name} won their doubles game. Team {player_c.name} and {player_d.name} Lost. {threw_first_name} threw first")
+        winner_change, loser_change = new_rating(winner_avg_elo+20, loser_avg_elo)      ##add 20 elo to threw first team
     elif threw_first_name == player_c.name or threw_first_name==player_d.name :
-        print(f"Team {player_a.name} and {player_b.name} won. On the losing team {threw_first_name} threw first")
-        winner_update, loser_update = new_rating(winner_avg_elo, loser_avg_elo+20)      ##add 20 elo to threw first team
-        winner_diff = winner_update - winner_avg_elo
-        loser_diff = (loser_update-20) - loser_avg_elo                                  ##remove 20 added
+        print(f"Team {player_a.name} and {player_b.name} won their doubles game. Team {player_c.name} and {player_d.name} Lost. {threw_first_name} threw first")
+        winner_change, loser_change = new_rating(winner_avg_elo, loser_avg_elo+20)      ##add 20 elo to threw first team
     else:
         print("Doubles match issue: couldnt find player name in list of players")
 
-    print(f"After their doubles game {player_a.name} and {player_b.name} gained {winner_diff} elo points")
-    player_a.update_rating(player_a.rating + winner_diff),player_b.update_rating(player_b.rating + winner_diff)
-    player_c.update_rating(player_c.rating + loser_diff),player_d.update_rating(player_d.rating + loser_diff)
+    print(f"After their doubles game {player_a.name} and {player_b.name} gained {winner_change} elo points")
+    player_a.update_rating(player_a.rating + winner_change),player_b.update_rating(player_b.rating + winner_change)
+    player_c.update_rating(player_c.rating + loser_change),player_d.update_rating(player_d.rating + loser_change)
 
 def update_rank_csv():
     player_data = [{'Name': player.name, 'Rating': player.rating} for player in players]
