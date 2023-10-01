@@ -18,13 +18,11 @@ Special thanks to Daniel Ryan for providing the R code and mathematical expertis
 His original product can be seen in the ExcelSheet.R file and Coolmoyne Leaderboards.xlsx excel file. 
 To date I have refactored his original code, added doubles match functionlaity and changed the data storage from 1 excel file to 3 csv files.
 
-All other files by Jackcon Ryan 
-(https://github.com/jackconryan)
+All other files by [Jackcon Ryan](https://github.com/jackconryan)
 
-Documentation by Jackcon Ryan and Harrison Salzverg 
-(https://github.com/Harrison-Salzverg)
+Documentation by [Jackcon Ryan](https://github.com/jackconryan) and [Harrison Salzverg](https://github.com/Harrison-Salzverg)
 
-See CONTRIBUTING.md for details on how to contribute.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to contribute.
 
 Contributions are made under the [license type] license.  The code of this repository is [license permissions].
 
