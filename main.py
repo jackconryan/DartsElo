@@ -77,17 +77,17 @@ def match_result_name(winner_name, loser_name, threw_first_name):
 
 ##  match result function. takes two players objects player a is the winner and b is the loser
 ##  adjust the ratings of the player who threw first by 50 elo points to account for the advatage throwing first gives a player
-##  ratings must be calculated and updated  
+##  ratings must be calculated and updated
 
 def match_result(player_a: pl.Player, player_b: pl.Player, winner_threw_first:bool):
     if winner_threw_first:
-        player_a_change, player_b_change = new_rating(player_a.rating+20, player_b.rating)      # add 20 elo points for first throw advatage
-        player_a.update_rating(player_a.rating+player_a_change)                                              # remove 20 elo points to account for advatage given
+        player_a_change, player_b_change = new_rating(player_a.rating+10, player_b.rating)      # add 10 elo points for first throw advatage
+        player_a.update_rating(player_a.rating+player_a_change)
         player_b.update_rating(player_b.rating+player_b_change)
     else:
-        player_a_change, player_b_change = new_rating(player_a.rating, player_b.rating+20)      # add 20 elo points for first throw advatage
-        player_a.update_rating(player_a.rating+player_a_change)                                              # remove 20 elo points to account for advatage given
-        player_b.update_rating(player_b.rating+player_b_change)                                             # remove 20 elo points to account for advatage given
+        player_a_change, player_b_change = new_rating(player_a.rating, player_b.rating+10)      # add 10 elo points for first throw advatage
+        player_a.update_rating(player_a.rating+player_a_change)
+        player_b.update_rating(player_b.rating+player_b_change)
 
 ##  update both players elo after completing a doubles match 
 ##  takes 4 player obj, averages their elo then does the usual calculation
@@ -97,10 +97,10 @@ def doubles_match_results(player_a:pl.Player, player_b: pl.Player, player_c:pl.P
     
     if  threw_first_name==player_a.name or threw_first_name==player_b.name:         ##check if winning team threw first
         print(f"Team {player_a.name} and {player_b.name} won their doubles game. Team {player_c.name} and {player_d.name} Lost. {threw_first_name} threw first")
-        winner_change, loser_change = new_rating(winner_avg_elo+20, loser_avg_elo)      ##add 20 elo to threw first team
+        winner_change, loser_change = new_rating(winner_avg_elo+10, loser_avg_elo)      ##add 10 elo to threw first team for calculation
     elif threw_first_name == player_c.name or threw_first_name==player_d.name :
         print(f"Team {player_a.name} and {player_b.name} won their doubles game. Team {player_c.name} and {player_d.name} Lost. {threw_first_name} threw first")
-        winner_change, loser_change = new_rating(winner_avg_elo, loser_avg_elo+20)      ##add 20 elo to threw first team
+        winner_change, loser_change = new_rating(winner_avg_elo, loser_avg_elo+10)      ##add 10 elo to threw first team for calculation
     else:
         print("Doubles match issue: couldnt find player name in list of players")
 
