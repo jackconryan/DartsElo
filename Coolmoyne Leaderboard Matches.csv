@@ -1,15 +1,16 @@
-﻿Winner,Score,Score2,Loser,Threw First
-Ricky,10,3,Zak,Ricky
-Ricky,10,7,Daniel,Daniel
-Eoghan,3,1,Daniel,Eoghan
-Zak,5,2,Eoghan,Eoghan
-Daniel,10,1,Ricky,Ricky
-Eoghan,10,9,Zak,Eoghan
-Ricky,5,0,Eoghan,Eoghan
-Zak,3,2,Eoghan,Zak
-Zak,5,4,Daniel,Daniel
-Daniel,10,0,Ricky,Ricky
-Eoghan,2,1,Zak,Eoghan
-Ricky,3,1,Jack,Ricky
-Daniel,4,1,Jack,Jack
-,,,,
+﻿Winner_1,Winner_2,Score_1,Score_2,Loser_1,Loser_2,Threw First
+Ricky,,10,3,Zak,,Ricky
+Ricky,,10,7,Daniel,,Daniel
+Eoghan,,3,1,Daniel,,Eoghan
+Zak,,5,2,Eoghan,,Eoghan
+Daniel,,10,1,Ricky,,Ricky
+Eoghan,,10,9,Zak,,Eoghan
+Ricky,,5,0,Eoghan,,Eoghan
+Zak,,3,2,Eoghan,,Zak
+Zak,,5,4,Daniel,,Daniel
+Daniel,,10,0,Ricky,,Ricky
+Eoghan,,2,1,Zak,,Eoghan
+Ricky,,3,1,Jack,,Ricky
+Daniel,,4,1,Jack,,Jack
+Zak,Jack,6,3,Daniel,Eoghan,Zak
+Zak,Daniel,5,1,Ricky,Eoghan,Eoghan
