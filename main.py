@@ -73,7 +73,8 @@ def calc_prev_match_data():
     """
     Calculate new elo ratings based on previous match data stored in the system
 
-    Iterates through the data stored in 'matches' and calculates the new elo ratings for each player in the match 
+    Iterates through the data stored in 'matches' check if it is a doubles or singles match
+    and calculates the new elo ratings for each player in the match 
     based on the results. 
 
     Raises: 
@@ -81,23 +82,42 @@ def calc_prev_match_data():
 
     """
     for _, match in matches.iterrows():
-        winner_name = match['Winner']
-        loser_name = match['Loser']
-        threw_first = match['Threw First']
-        winner, loser = None,None #redeclare each loop to prevent entirely empty row in csv from creating an error
-        for player in players:
-            if winner_name == player.name:
-                winner = player
-                continue
-            if loser_name == player.name:
-                loser = player
-                continue
-        if(winner.name ==  threw_first):
-            match_result(winner, loser, True)
-        elif(loser.name == threw_first):
-            match_result(winner, loser, False)
+        if pd.notna(match['Winner_2']):
+            winner1_name, winner2_name = match['Winner_1'], match['Winner_2']
+            loser1_name, loser2_name = match['Loser_1'], match['Loser_2']
+            threw_first = match['Threw First']
+            for player in players:
+                if winner1_name == player.name:
+                    winner1 = player
+                    continue
+                if winner2_name == player.name:
+                    winner2 = player
+                    continue
+                if loser1_name == player.name:
+                    loser1 = player
+                    continue
+                if loser2_name == player.name:
+                    loser2 = player
+                    continue
+            doubles_match_results(winner1, winner2, loser1, loser2, threw_first)
+
         else:
-            raise ValueError(f"Error matching a player's name with 'Threw First' as entered in the CSV: {winner.name}, {loser.name}, {threw_first}")
+            winner_name = match['Winner_1']
+            loser_name = match['Loser_1']
+            threw_first = match['Threw First']
+            winner, loser = None,None #redeclare each loop to prevent entirely empty row in csv from creating an error
+            for player in players:
+                if winner_name == player.name: winner = player 
+                elif loser_name == player.name: loser = player
+            try:
+                if winner.name == threw_first:
+                    match_result(winner, loser, True)
+                elif loser.name == threw_first:
+                    match_result(winner, loser, False)
+                else:
+                    raise ValueError(f"Error matching a player's name with 'Threw First' as entered in the CSV: {winner.name}, {loser.name}, {threw_first}")
+            except ValueError as e:
+                print(e)
 
 ##  calculate match result based on players name only
 ##  this means we must look up player in list of players and is 
@@ -202,13 +222,6 @@ calc_prev_match_data()
 print("After calculating the historical matches the current standings are")
 print_rankings()
 
-##  test doubles match winner threw first
-doubles_match_results(players[3], players[4], players[0], players[1], players[3].name)
-##  test doubles match loser threw first 
-doubles_match_results(players[3], players[0], players[2], players[1], players[1].name)
-
-##  print rankings after doubles match
-print_rankings()
 print_current_avg_elo()
 
 update_rank_csv()
